@@ -1,0 +1,15 @@
+node_modules/
+.DS_Store
+temporary screenshots/
+.claude/settings.local.json
+
+# Design reference files, not part of the live site
+gregorcollienne.com_ (1).png
+ref menu.png
+text ref.png
+site_ref_print/
+
+# Raw source footage/stills used only by local build scripts (scripts/*.mjs).
+# The live site only loads from assets/, which already contains the built output.
+videos_portfolio/
+stills_portfolio/

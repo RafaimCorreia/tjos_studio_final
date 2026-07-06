@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" id="favicon" href="assets/logo-mark-black.png">
+<script>
+(function(){
+  var emojis = ["🖥️","🎨","📸","📺","🎥","💙"];
+  var link = document.getElementById("favicon");
+  if (!link) return;
+  var canvas = document.createElement("canvas");
+  canvas.width = 64; canvas.height = 64;
+  var ctx = canvas.getContext("2d");
+
+  function paint(i){
+    ctx.clearRect(0, 0, 64, 64);
+    ctx.font = "52px serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(emojis[i], 32, 34);
+    link.href = canvas.toDataURL("image/png");
+  }
+
+  var idx = 0;
+  paint(idx);
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    setInterval(function(){
+      idx = (idx + 1) % emojis.length;
+      paint(idx);
+    }, 600);
+  }
+})();
+</script>
+<title>TJOS.post</title>
+<meta name="description" content="T—JOS is an independent colour and editing studio based in Australia.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TJOS.post">
+<meta property="og:title" content="TJOS.post">
+<meta property="og:description" content="T—JOS is an independent colour and editing studio based in Australia.">
+<meta property="og:image" content="assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TJOS.post">
+<meta name="twitter:description" content="T—JOS is an independent colour and editing studio based in Australia.">
+<meta name="twitter:image" content="assets/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cubic: cubic-bezier(.77, 0, .175, 1);
+    --cream: #EAE5D7;
+    --ink: #0C0C0C;
+    --terracotta: #C44231;
+    --cobalt: #004AAD;
+    --font-serif: "PT Serif", Georgia, "Times New Roman", serif;
+    --frame-side: 18%;
+    --header-h: 72px;
+    --footer-h: 108px;
+  }
+
+  *{ box-sizing:border-box; padding:0; margin:0; }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  }
+
+  html, body{ height:100%; }
+
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--font-serif);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+    animation:pageFadeIn .7s var(--cubic) both;
+  }
+
+  @keyframes pageFadeIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+  }
+
+  a, button{
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext x='16' y='24' font-size='26' text-anchor='middle'%3E%F0%9F%8E%A8%3C/text%3E%3C/svg%3E") 6 6, pointer;
+  }
+  a{ color:inherit; text-decoration:none; }
+
+  :focus-visible{
+    outline:2px solid var(--ink);
+    outline-offset:3px;
+  }
+
+  /* ---------- frame ---------- */
+  .frame-v{
+    position:fixed;
+    top:0; bottom:0;
+    width:1px;
+    background:var(--ink);
+    z-index:5;
+    pointer-events:none;
+  }
+  .frame-v-left{ left:var(--frame-side); }
+  .frame-v-right{ right:var(--frame-side); }
+  .frame-h{
+    position:fixed;
+    left:0; right:0;
+    height:1px;
+    background:var(--ink);
+    z-index:5;
+    pointer-events:none;
+  }
+  .frame-h-top{ top:var(--header-h); }
+  .frame-h-bottom{ bottom:var(--footer-h); }
+
+  .spotlight-canvas{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:9999;
+  }
+
+  /* ---------- header ---------- */
+  .site-header{
+    position:fixed;
+    top:0; left:0; right:0;
+    height:var(--header-h);
+    z-index:10;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+    align-items:center;
+    padding:0 calc(var(--frame-side) + 40px);
+  }
+  .site-header-left{
+    justify-self:start;
+    font-size:11px;
+    font-weight:400;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+  .site-header-center{ justify-self:center; }
+  .site-header-right{
+    justify-self:end;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .nav-btn{
+    display:inline-block;
+    padding:.55em 1.2em;
+    font-family:var(--font-serif);
+    font-size:13px;
+    font-weight:400;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    text-align:center;
+    transition:transform .3s var(--cubic), opacity .3s ease;
+  }
+  .nav-btn:hover{ transform:translateY(-2px); }
+  .nav-btn:active{ transform:translateY(0); }
+  .nav-btn--black{ background:var(--ink); color:var(--cream); }
+  .nav-btn--red{ background:var(--terracotta); color:#fff; }
+  .nav-btn--blue{ background:var(--cobalt); color:#fff; }
+
+  .nav-logo{ height:50px; width:auto; display:block; }
+
+  /* ---------- hero ---------- */
+  .home-video{
+    position:fixed;
+    top:var(--header-h);
+    bottom:var(--footer-h);
+    left:var(--frame-side);
+    right:var(--frame-side);
+    z-index:0;
+    overflow:hidden;
+  }
+  .home-video video{
+    position:absolute;
+    top:50%; left:50%;
+    width:100%; height:100%;
+    object-fit:cover;
+    transform:translate(-50%, -50%);
+    opacity:.1;
+  }
+
+  main{
+    position:relative;
+    z-index:1;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    padding:0 6vw;
+    text-align:center;
+  }
+
+  .home-logo-box{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--ink);
+    padding:clamp(20px, 3vw, 34px) clamp(28px, 4.5vw, 50px);
+  }
+  .home-logo-box img{
+    height:clamp(48px, 6vw, 78px);
+    width:auto;
+    filter:brightness(0) invert(1);
+  }
+  .home-caption{
+    font-size:clamp(15px, 1.6vw, 19px);
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+
+  @media (max-width:900px){
+    :root{ --frame-side:6%; --header-h:104px; --footer-h:56px; }
+    .site-header{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:10px;
+      padding:14px calc(var(--frame-side) + 10px);
+    }
+    .site-header-left{ display:none; }
+    .site-header-right{ justify-content:center; gap:8px; }
+    .nav-btn{ padding:.5em .85em; font-size:11px; }
+    .nav-logo{ height:38px; }
+  }
+</style>
+</head>
+
+<body>
+
+  <div class="frame-v frame-v-left" aria-hidden="true"></div>
+  <div class="frame-v frame-v-right" aria-hidden="true"></div>
+  <div class="frame-h frame-h-top" aria-hidden="true"></div>
+  <div class="frame-h frame-h-bottom" aria-hidden="true"></div>
+
+  <div class="home-video" aria-hidden="true">
+    <video autoplay muted loop playsinline poster="assets/video/home-loop-poster.jpg">
+      <source src="assets/video/home-loop.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <header class="site-header">
+    <span class="site-header-left">Colour and editing studio</span>
+    <a href="work.html" class="site-header-center nav-btn nav-btn--black">Work</a>
+    <nav class="site-header-right" aria-label="Primary">
+      <a href="about.html" class="nav-btn nav-btn--red">About</a>
+      <a href="contact.html" class="nav-btn nav-btn--blue">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <a href="work.html" class="home-logo-box" aria-label="Enter site">
+      <img src="assets/logo-mark-black.png" alt="T—JOS">
+    </a>
+    <span class="home-caption">Post Production</span>
+  </main>
+
+  <canvas class="spotlight-canvas" aria-hidden="true"></canvas>
+
+<script>
+  (function(){
+    var bottomLine = document.querySelector(".frame-h-bottom");
+    if (bottomLine){
+      var pinBottom = function(){
+        var footerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--footer-h"));
+        bottomLine.style.top = (window.innerHeight - footerH) + "px";
+        bottomLine.style.bottom = "auto";
+      };
+      pinBottom();
+      window.addEventListener("resize", pinBottom);
+      window.addEventListener("orientationchange", pinBottom);
+    }
+  })();
+
+  (function(){
+    var canvas = document.querySelector(".spotlight-canvas");
+    if (!canvas || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var ctx = canvas.getContext("2d");
+    var mouseX = -1000, mouseY = -1000;
+    var radius = 200, brightness = 0.15, color = "255,255,255";
+
+    function resize(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    function draw(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (mouseX > -999){
+        var gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, radius);
+        gradient.addColorStop(0, "rgba(" + color + "," + brightness + ")");
+        gradient.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    window.addEventListener("resize", resize);
+    window.addEventListener("mousemove", function(e){ mouseX = e.clientX; mouseY = e.clientY; });
+    window.addEventListener("mouseleave", function(){ mouseX = -1000; mouseY = -1000; });
+    requestAnimationFrame(draw);
+  })();
+</script>
+
+</body>
+</html>
