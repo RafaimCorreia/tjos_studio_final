@@ -203,22 +203,70 @@
   }
 
   .home-logo-box{
+    position:relative;
     display:inline-flex;
     align-items:center;
     justify-content:center;
     background:var(--ink);
     padding:clamp(20px, 3vw, 34px) clamp(28px, 4.5vw, 50px);
+    transform:scale(1);
+    box-shadow:0 0 0 rgba(196,66,49,0);
+    transition:transform .5s var(--cubic), box-shadow .5s var(--cubic);
   }
   .home-logo-box img{
     height:clamp(48px, 6vw, 78px);
     width:auto;
     filter:brightness(0) invert(1);
+    transition:transform .5s var(--cubic);
+  }
+  .home-logo-box:hover,
+  .home-logo-box:focus-visible{
+    transform:scale(1.06);
+    box-shadow:0 24px 48px -16px rgba(196,66,49,.4), 0 10px 20px -10px rgba(12,12,12,.45);
+  }
+  .home-logo-box:active{
+    transform:scale(1.02);
   }
   .home-caption{
+    position:relative;
+    display:inline-block;
+    height:1.4em;
     font-size:clamp(15px, 1.6vw, 19px);
     letter-spacing:.18em;
     text-transform:uppercase;
-    color:var(--ink);
+  }
+  .home-caption-text{
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translate(-50%, 0);
+    white-space:nowrap;
+    opacity:1;
+    transition:opacity .4s var(--cubic), transform .4s var(--cubic);
+  }
+  .home-caption-text--default{ color:var(--ink); }
+  .home-caption-text--hover{
+    display:inline-flex;
+    align-items:center;
+    gap:.5em;
+    color:var(--terracotta);
+    opacity:0;
+    transform:translate(-50%, 6px);
+  }
+  .home-caption-text--hover svg{ width:12px; height:12px; transition:transform .4s var(--cubic); }
+  .home-logo-box:hover ~ .home-caption .home-caption-text--default,
+  .home-logo-box:focus-visible ~ .home-caption .home-caption-text--default{
+    opacity:0;
+    transform:translate(-50%, -6px);
+  }
+  .home-logo-box:hover ~ .home-caption .home-caption-text--hover,
+  .home-logo-box:focus-visible ~ .home-caption .home-caption-text--hover{
+    opacity:1;
+    transform:translate(-50%, 0);
+  }
+  .home-logo-box:hover ~ .home-caption .home-caption-text--hover svg,
+  .home-logo-box:focus-visible ~ .home-caption .home-caption-text--hover svg{
+    transform:translateX(3px);
   }
 
   @media (max-width:900px){
@@ -261,10 +309,17 @@
   </header>
 
   <main>
-    <a href="work.html" class="home-logo-box" aria-label="Enter site">
+    <a href="work.html" class="home-logo-box" aria-label="View work">
       <img src="assets/logo-mark-black.png" alt="T—JOS">
     </a>
-    <span class="home-caption">Post Production</span>
+    <span class="home-caption">
+      <span class="home-caption-text home-caption-text--default">Post Production</span>
+      <span class="home-caption-text home-caption-text--hover" aria-hidden="true">View Work
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 8H14M14 8L9 3M14 8L9 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </span>
   </main>
 
   <canvas class="spotlight-canvas" aria-hidden="true"></canvas>
