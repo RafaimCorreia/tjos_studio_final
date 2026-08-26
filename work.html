@@ -313,7 +313,7 @@
   })();
 
   var grid = document.getElementById("grid");
-  var FRAME_MS = 450;
+  var FRAME_MS = 1000;
   var isTouchDevice = ("ontouchstart" in window) || navigator.maxTouchPoints > 0 || window.matchMedia("(pointer: coarse)").matches;
   var supportsHover = !isTouchDevice && window.matchMedia("(hover: hover)").matches;
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -365,32 +365,9 @@
 
     function stop(){
       if (timer){ window.clearInterval(timer); timer = null; }
-      frameIndex = restIndex;
-      img.src = frames[restIndex];
     }
 
-    if (supportsHover){
-      wrap.addEventListener("mouseenter", function(){
-        play();
-        wrap.classList.add("is-active");
-        grid.classList.add("is-hovering");
-      });
-      wrap.addEventListener("mouseleave", function(){
-        stop();
-        wrap.classList.remove("is-active");
-        grid.classList.remove("is-hovering");
-      });
-      wrap.addEventListener("focus", function(){
-        play();
-        wrap.classList.add("is-active");
-        grid.classList.add("is-hovering");
-      });
-      wrap.addEventListener("blur", function(){
-        stop();
-        wrap.classList.remove("is-active");
-        grid.classList.remove("is-hovering");
-      });
-    } else if (!reduceMotion){
+    if (!reduceMotion){
       var observer = new IntersectionObserver(function(entries){
         entries.forEach(function(entry){
           if (entry.isIntersecting) play();
@@ -398,6 +375,25 @@
         });
       }, { threshold:0.35 });
       observer.observe(wrap);
+    }
+
+    if (supportsHover){
+      wrap.addEventListener("mouseenter", function(){
+        wrap.classList.add("is-active");
+        grid.classList.add("is-hovering");
+      });
+      wrap.addEventListener("mouseleave", function(){
+        wrap.classList.remove("is-active");
+        grid.classList.remove("is-hovering");
+      });
+      wrap.addEventListener("focus", function(){
+        wrap.classList.add("is-active");
+        grid.classList.add("is-hovering");
+      });
+      wrap.addEventListener("blur", function(){
+        wrap.classList.remove("is-active");
+        grid.classList.remove("is-hovering");
+      });
     }
 
     return wrap;
