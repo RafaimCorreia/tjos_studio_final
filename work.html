@@ -357,14 +357,16 @@
     function play(){
       if (frames.length < 2 || timer || reduceMotion) return;
       preload();
-      timer = window.setInterval(function(){
+      function tick(){
         frameIndex = (frameIndex + 1) % frames.length;
         img.src = frames[frameIndex];
-      }, FRAME_MS);
+        timer = window.setTimeout(tick, FRAME_MS);
+      }
+      timer = window.setTimeout(tick, Math.random() * FRAME_MS);
     }
 
     function stop(){
-      if (timer){ window.clearInterval(timer); timer = null; }
+      if (timer){ window.clearTimeout(timer); timer = null; }
     }
 
     if (!reduceMotion){
