@@ -328,7 +328,6 @@
     media.className = "work-media";
 
     var img = document.createElement("img");
-    img.src = "assets/work/" + project.id + "/01" + project.ext;
     img.alt = "";
     media.appendChild(img);
     wrap.appendChild(media);
@@ -339,8 +338,11 @@
       frames.push("assets/work/" + project.id + "/" + String(i).padStart(2, "0") + project.ext);
     }
 
+    var restIndex = Math.floor(Math.random() * frames.length);
+    img.src = frames[restIndex];
+
     var timer = null;
-    var frameIndex = 0;
+    var frameIndex = restIndex;
     var preloaded = false;
 
     function preload(){
@@ -363,8 +365,8 @@
 
     function stop(){
       if (timer){ window.clearInterval(timer); timer = null; }
-      frameIndex = 0;
-      img.src = frames[0];
+      frameIndex = restIndex;
+      img.src = frames[restIndex];
     }
 
     if (supportsHover){
