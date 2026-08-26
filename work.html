@@ -329,14 +329,20 @@
     var timer = null;
     var fadeTimeout = null;
     var frameIndex = 0;
+    var preloaded = false;
 
-    frames.forEach(function(src){
-      var pre = new Image();
-      pre.src = src;
-    });
+    function preload(){
+      if (preloaded) return;
+      preloaded = true;
+      frames.forEach(function(src){
+        var pre = new Image();
+        pre.src = src;
+      });
+    }
 
     function play(){
       if (frames.length < 2 || timer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      preload();
       timer = window.setInterval(function(){
         img.style.opacity = 0;
         fadeTimeout = window.setTimeout(function(){
@@ -348,18 +354,21 @@
       }, FRAME_MS);
     }
 
-    function pause(){
+    function stop(){
       if (timer){ window.clearInterval(timer); timer = null; }
       if (fadeTimeout){ window.clearTimeout(fadeTimeout); fadeTimeout = null; }
-      img.style.opacity = 1;
+      frameIndex = 0;
+      img.style.opacity = 0;
+      window.setTimeout(function(){
+        img.src = frames[0];
+        img.style.opacity = 1;
+      }, FADE_MS);
     }
 
-    wrap.addEventListener("mouseenter", pause);
-    wrap.addEventListener("mouseleave", play);
-    wrap.addEventListener("focus", pause);
-    wrap.addEventListener("blur", play);
-
-    play();
+    wrap.addEventListener("mouseenter", play);
+    wrap.addEventListener("mouseleave", stop);
+    wrap.addEventListener("focus", play);
+    wrap.addEventListener("blur", stop);
 
     return wrap;
   }
