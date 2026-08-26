@@ -313,7 +313,7 @@
   })();
 
   var grid = document.getElementById("grid");
-  var FRAME_MS = 1000;
+  var FRAME_MS = 450;
   var isTouchDevice = ("ontouchstart" in window) || navigator.maxTouchPoints > 0 || window.matchMedia("(pointer: coarse)").matches;
   var supportsHover = !isTouchDevice && window.matchMedia("(hover: hover)").matches;
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -357,48 +357,51 @@
     function play(){
       if (frames.length < 2 || timer || reduceMotion) return;
       preload();
-      function tick(){
+      timer = window.setInterval(function(){
         frameIndex = (frameIndex + 1) % frames.length;
         img.src = frames[frameIndex];
-        timer = window.setTimeout(tick, FRAME_MS);
-      }
-      timer = window.setTimeout(tick, Math.random() * FRAME_MS);
+      }, FRAME_MS);
     }
 
     function stop(){
-      if (timer){ window.clearTimeout(timer); timer = null; }
+      if (timer){ window.clearInterval(timer); timer = null; }
+      frameIndex = restIndex;
+      img.src = frames[restIndex];
     }
 
-    if (!reduceMotion){
-      var observer = new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){
-          if (entry.isIntersecting) play();
-          else stop();
-        });
-      }, { threshold:0.35 });
-      observer.observe(wrap);
+    function scrubTo(offset){
+      if (timer || frames.length < 2 || reduceMotion) return;
+      var idx = ((restIndex + offset) % frames.length + frames.length) % frames.length;
+      if (idx === frameIndex) return;
+      frameIndex = idx;
+      preload();
+      img.src = frames[idx];
     }
 
     if (supportsHover){
       wrap.addEventListener("mouseenter", function(){
+        play();
         wrap.classList.add("is-active");
         grid.classList.add("is-hovering");
       });
       wrap.addEventListener("mouseleave", function(){
+        stop();
         wrap.classList.remove("is-active");
         grid.classList.remove("is-hovering");
       });
       wrap.addEventListener("focus", function(){
+        play();
         wrap.classList.add("is-active");
         grid.classList.add("is-hovering");
       });
       wrap.addEventListener("blur", function(){
+        stop();
         wrap.classList.remove("is-active");
         grid.classList.remove("is-hovering");
       });
     }
 
-    return wrap;
+    return { el:wrap, scrubTo:scrubTo };
   }
 
   function shuffle(arr){
@@ -412,9 +415,30 @@
   fetch("assets/work/manifest.json")
     .then(function(res){ return res.json(); })
     .then(function(data){
-      shuffle(data).forEach(function(project){
-        grid.appendChild(makeItem(project));
+      var items = shuffle(data).map(function(project){
+        var item = makeItem(project);
+        grid.appendChild(item.el);
+        return item;
       });
+
+      if (!reduceMotion){
+        var SCROLL_PER_FRAME = 45;
+        var mainEl = document.querySelector("main");
+        var lastOffset = Math.round(mainEl.scrollTop / SCROLL_PER_FRAME);
+        var ticking = false;
+        mainEl.addEventListener("scroll", function(){
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(function(){
+            var offset = Math.round(mainEl.scrollTop / SCROLL_PER_FRAME);
+            if (offset !== lastOffset){
+              lastOffset = offset;
+              items.forEach(function(item){ item.scrubTo(offset); });
+            }
+            ticking = false;
+          });
+        });
+      }
     });
 </script>
 
