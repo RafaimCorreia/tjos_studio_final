@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/logo-black.png">
+<title>TJOS — Reel</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="TJOS — Reel">
+<meta property="og:description" content="A private reel from T—JOS.">
+<meta property="og:image" content="assets/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cubic: cubic-bezier(.77, 0, .175, 1);
+    --ink: #0C0C0C;
+    --cream: #EAE5D7;
+    --cobalt: #004AAD;
+    --font-serif: "PT Serif", Georgia, "Times New Roman", serif;
+  }
+
+  *{ box-sizing:border-box; padding:0; margin:0; }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  }
+
+  html, body{ height:100%; }
+
+  body{
+    background:var(--ink);
+    color:var(--cream);
+    font-family:var(--font-serif);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:6vh 5vw;
+    gap:28px;
+    animation:pageFadeIn .7s var(--cubic) both;
+  }
+
+  @keyframes pageFadeIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+  }
+
+  a{ color:inherit; }
+
+  :focus-visible{
+    outline:2px solid var(--cream);
+    outline-offset:3px;
+  }
+
+  .reel-logo{
+    height:34px;
+    width:auto;
+    filter:brightness(0) invert(1);
+    opacity:.85;
+    transition:opacity .3s ease, transform .3s var(--cubic);
+  }
+  .reel-logo:hover, .reel-logo:focus-visible{ opacity:1; transform:translateY(-1px); }
+
+  .reel-stage{
+    position:relative;
+    width:100%;
+    max-width:1100px;
+    aspect-ratio:16/9;
+    background:#000;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.7), 0 12px 30px -14px rgba(0,0,0,.6);
+  }
+
+  .reel-stage video{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#000;
+  }
+
+  .reel-fallback{
+    display:none;
+    position:absolute;
+    inset:0;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 8%;
+    font-size:15px;
+    letter-spacing:.03em;
+    color:rgba(234,229,215,.55);
+  }
+  .reel-stage.is-errored .reel-fallback{ display:flex; }
+  .reel-stage.is-errored video{ display:none; }
+
+  .reel-caption{
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:rgba(234,229,215,.55);
+    text-align:center;
+  }
+
+  @media (max-width:700px){
+    body{ padding:8vh 6vw; gap:20px; }
+    .reel-caption{ font-size:11px; }
+  }
+</style>
+</head>
+
+<body>
+
+  <a href="index.html" aria-label="T—JOS home">
+    <img src="assets/logo-black.png" alt="T—JOS" class="reel-logo">
+  </a>
+
+  <div class="reel-stage" id="reelStage">
+    <video controls playsinline poster="assets/video/rafaim-reel-poster.jpg">
+      <source src="assets/video/rafaim-reel.mp4" type="video/mp4">
+    </video>
+    <div class="reel-fallback">Video coming soon.</div>
+  </div>
+
+  <p class="reel-caption">Rafa — Colourist &amp; Editor Reel</p>
+
+<script>
+  (function(){
+    var stage = document.getElementById("reelStage");
+    var video = stage.querySelector("video");
+    video.addEventListener("error", function(){ stage.classList.add("is-errored"); }, true);
+  })();
+</script>
+
+</body>
+</html>
