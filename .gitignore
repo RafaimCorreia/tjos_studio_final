@@ -13,3 +13,7 @@ site_ref_print/
 # The live site only loads from assets/, which already contains the built output.
 videos_portfolio/
 stills_portfolio/
+
+# Raw uncompressed video masters - too large to commit, web-ready
+# exports live in assets/video/*.mp4 instead.
+assets/video/*.mov
