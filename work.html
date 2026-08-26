@@ -240,7 +240,7 @@
   <div class="frame-h frame-h-bottom" aria-hidden="true"></div>
 
   <header class="site-header">
-    <span class="site-header-left">Colour and editing studio</span>
+    <span class="site-header-left">Colour grading and editing</span>
     <a href="index.html" class="site-header-center" aria-label="T—JOS home">
       <img src="assets/logo-black.png" alt="T—JOS" class="nav-logo">
     </a>
@@ -302,7 +302,7 @@
   })();
 
   var grid = document.getElementById("grid");
-  var HOVER_FRAME_MS = 300;
+  var FRAME_MS = 300;
 
   function makeItem(project){
     var wrap = document.createElement("a");
@@ -327,37 +327,30 @@
 
     var timer = null;
     var frameIndex = 0;
-    var preloaded = false;
 
-    function preload(){
-      if (preloaded) return;
-      preloaded = true;
-      frames.forEach(function(src){
-        var pre = new Image();
-        pre.src = src;
-      });
-    }
+    frames.forEach(function(src){
+      var pre = new Image();
+      pre.src = src;
+    });
 
-    function startSlideshow(){
-      if (frames.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      preload();
-      frameIndex = 0;
+    function play(){
+      if (frames.length < 2 || timer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       timer = window.setInterval(function(){
         frameIndex = (frameIndex + 1) % frames.length;
         img.src = frames[frameIndex];
-      }, HOVER_FRAME_MS);
+      }, FRAME_MS);
     }
 
-    function stopSlideshow(){
+    function pause(){
       if (timer){ window.clearInterval(timer); timer = null; }
-      frameIndex = 0;
-      img.src = frames[0];
     }
 
-    wrap.addEventListener("mouseenter", startSlideshow);
-    wrap.addEventListener("mouseleave", stopSlideshow);
-    wrap.addEventListener("focus", startSlideshow);
-    wrap.addEventListener("blur", stopSlideshow);
+    wrap.addEventListener("mouseenter", pause);
+    wrap.addEventListener("mouseleave", play);
+    wrap.addEventListener("focus", pause);
+    wrap.addEventListener("blur", play);
+
+    play();
 
     return wrap;
   }

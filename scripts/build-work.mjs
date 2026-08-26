@@ -56,12 +56,12 @@ var folders = fs.readdirSync(SRC).filter(function(f){
   return fs.statSync(path.join(SRC, f)).isDirectory();
 });
 
-function folderDate(f){
-  var m = f.match(/(\d{8})_(\d{6})$/);
-  return m ? m[1] + m[2] : "0";
+// Randomize project order (rather than sorting by post date) so the
+// work grid doesn't read as a chronological feed.
+for (var i = folders.length - 1; i > 0; i--){
+  var j = Math.floor(Math.random() * (i + 1));
+  var tmp = folders[i]; folders[i] = folders[j]; folders[j] = tmp;
 }
-
-folders.sort(function(a, b){ return folderDate(b).localeCompare(folderDate(a)); });
 
 var manifest = [];
 
