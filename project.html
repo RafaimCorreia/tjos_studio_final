@@ -185,12 +185,12 @@
 
   .p-carousel{
     min-height:100%;
-    padding:36px var(--frame-side) 48px;
+    padding:20px var(--frame-side) 18px;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:22px;
+    gap:12px;
   }
 
   .p-stage{
@@ -283,6 +283,14 @@
     border-color:var(--cream);
   }
 
+  .p-credit{
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:rgba(234,229,215,.45);
+    text-align:center;
+  }
+
   @media (max-width:900px){
     :root{ --frame-side:6%; --header-h:104px; --footer-h:56px; }
     .site-header{
@@ -334,6 +342,7 @@
       <div class="p-thumbs" id="thumbs">
         <div class="p-thumbs-track" id="thumbsTrack"></div>
       </div>
+      <p class="p-credit">This project is featured as part of Rafaim Correia&rsquo;s colour grading portfolio</p>
     </div>
   </main>
 
