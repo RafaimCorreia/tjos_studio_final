@@ -370,7 +370,7 @@
     }
 
     function scrubTo(offset){
-      if (timer || frames.length < 2 || reduceMotion) return;
+      if (timer || frames.length < 2) return;
       var idx = ((restIndex + offset) % frames.length + frames.length) % frames.length;
       if (idx === frameIndex) return;
       frameIndex = idx;
@@ -421,19 +421,50 @@
         return item;
       });
 
-      if (!reduceMotion){
-        var SCROLL_PER_FRAME = 450;
-        var mainEl = document.querySelector("main");
-        var lastOffset = Math.round(mainEl.scrollTop / SCROLL_PER_FRAME);
-        (function pollScroll(){
-          var offset = Math.round(mainEl.scrollTop / SCROLL_PER_FRAME);
-          if (offset !== lastOffset){
-            lastOffset = offset;
-            items.forEach(function(item){ item.scrubTo(offset); });
-          }
-          window.requestAnimationFrame(pollScroll);
-        })();
+      var SCROLL_PER_FRAME = 450;
+      var mainEl = document.querySelector("main");
+      var scrollAccum = 0;
+      var lastOffset = 0;
+
+      function applyOffset(){
+        var offset = Math.round(scrollAccum / SCROLL_PER_FRAME);
+        if (offset !== lastOffset){
+          lastOffset = offset;
+          items.forEach(function(item){ item.scrubTo(offset); });
+        }
       }
+
+      // Desktop / mouse-wheel: poll scrollTop via rAF (avoids relying on the
+      // scroll event, which is unreliable on position:fixed containers).
+      var isTouching = false;
+      (function pollScroll(){
+        if (!isTouching){
+          scrollAccum = mainEl.scrollTop;
+          applyOffset();
+        }
+        window.requestAnimationFrame(pollScroll);
+      })();
+
+      // Touch devices: scrollTop itself can lag on iOS during a drag, so
+      // track raw touch movement directly as a fallback signal instead.
+      var touchStartY = null;
+      var touchStartAccum = 0;
+      mainEl.addEventListener("touchstart", function(e){
+        if (!e.touches.length) return;
+        isTouching = true;
+        touchStartY = e.touches[0].clientY;
+        touchStartAccum = scrollAccum;
+      }, { passive:true });
+      mainEl.addEventListener("touchmove", function(e){
+        if (touchStartY === null || !e.touches.length) return;
+        var dy = touchStartY - e.touches[0].clientY;
+        scrollAccum = touchStartAccum + dy;
+        applyOffset();
+      }, { passive:true });
+      mainEl.addEventListener("touchend", function(){
+        touchStartY = null;
+        window.setTimeout(function(){ isTouching = false; }, 80);
+      }, { passive:true });
     });
 </script>
 
