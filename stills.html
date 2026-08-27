@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/logo-black.png">
+<title>TJOS — Stills</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="TJOS — Stills">
+<meta property="og:description" content="A private stills wall from T—JOS.">
+<meta property="og:image" content="assets/og-image.png">
+
+<style>
+  *{ box-sizing:border-box; padding:0; margin:0; }
+
+  html, body{ background:#000; }
+
+  body{
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .logo{
+    position:fixed;
+    top:18px;
+    left:18px;
+    z-index:10;
+    height:26px;
+    width:auto;
+    filter:brightness(0) invert(1);
+    opacity:.7;
+    transition:opacity .3s ease;
+  }
+  .logo:hover, .logo:focus-visible{ opacity:1; }
+
+  .wall{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+    gap:0;
+  }
+
+  .wall img{
+    display:block;
+    width:100%;
+    height:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    background:#111;
+  }
+
+  @media (max-width:700px){
+    .wall{ grid-template-columns:repeat(3, 1fr); }
+  }
+</style>
+</head>
+
+<body>
+
+  <a href="index.html" class="logo-link" aria-label="TJOS home">
+    <img src="assets/logo-black.png" alt="TJOS" class="logo">
+  </a>
+
+  <div class="wall" id="wall"></div>
+
+<script>
+  var wall = document.getElementById("wall");
+
+  function shuffle(arr){
+    for (var i = arr.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  fetch("assets/work/manifest.json")
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      var stills = [];
+      data.forEach(function(project){
+        for (var i = 1; i <= project.count; i++){
+          stills.push("assets/work/" + project.id + "/" + String(i).padStart(2, "0") + project.ext);
+        }
+      });
+      shuffle(stills).forEach(function(src){
+        var img = document.createElement("img");
+        img.src = src;
+        img.alt = "";
+        img.loading = "lazy";
+        img.decoding = "async";
+        wall.appendChild(img);
+      });
+    });
+</script>
+
+</body>
+</html>
