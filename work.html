@@ -425,19 +425,14 @@
         var SCROLL_PER_FRAME = 450;
         var mainEl = document.querySelector("main");
         var lastOffset = Math.round(mainEl.scrollTop / SCROLL_PER_FRAME);
-        var ticking = false;
-        mainEl.addEventListener("scroll", function(){
-          if (ticking) return;
-          ticking = true;
-          window.requestAnimationFrame(function(){
-            var offset = Math.round(mainEl.scrollTop / SCROLL_PER_FRAME);
-            if (offset !== lastOffset){
-              lastOffset = offset;
-              items.forEach(function(item){ item.scrubTo(offset); });
-            }
-            ticking = false;
-          });
-        });
+        (function pollScroll(){
+          var offset = Math.round(mainEl.scrollTop / SCROLL_PER_FRAME);
+          if (offset !== lastOffset){
+            lastOffset = offset;
+            items.forEach(function(item){ item.scrubTo(offset); });
+          }
+          window.requestAnimationFrame(pollScroll);
+        })();
       }
     });
 </script>
