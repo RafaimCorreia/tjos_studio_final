@@ -25,13 +25,18 @@ http
   .createServer((req, res) => {
     let reqPath = decodeURIComponent(req.url.split("?")[0]);
     if (reqPath === "/") reqPath = "/index.html";
-    const filePath = path.join(root, reqPath);
+    let filePath = path.join(root, reqPath);
     if (!filePath.startsWith(root)) {
       res.writeHead(403);
       res.end("Forbidden");
       return;
     }
     fs.stat(filePath, (err, stat) => {
+      if (!err && stat.isDirectory()) {
+        filePath = path.join(filePath, "index.html");
+        err = !fs.existsSync(filePath);
+        if (!err) stat = fs.statSync(filePath);
+      }
       if (err) {
         res.writeHead(404);
         res.end("Not found");

@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="assets/logo-black.png">
+<link rel="icon" href="../assets/logo-black.png">
 <title>TJOS — Stills</title>
 <meta property="og:type" content="website">
 <meta property="og:title" content="TJOS — Stills">
 <meta property="og:description" content="A private stills wall from T—JOS.">
-<meta property="og:image" content="assets/og-image.png">
+<meta property="og:image" content="../assets/og-image.png">
 
 <style>
   *{ box-sizing:border-box; padding:0; margin:0; }
@@ -56,8 +56,8 @@
 
 <body>
 
-  <a href="index.html" class="logo-link" aria-label="TJOS home">
-    <img src="assets/logo-black.png" alt="TJOS" class="logo">
+  <a href="../index.html" class="logo-link" aria-label="TJOS home">
+    <img src="../assets/logo-black.png" alt="TJOS" class="logo">
   </a>
 
   <div class="wall" id="wall"></div>
@@ -73,13 +73,13 @@
     return arr;
   }
 
-  fetch("assets/work/manifest.json")
+  fetch("../assets/work/manifest.json")
     .then(function(res){ return res.json(); })
     .then(function(data){
       var stills = [];
       data.forEach(function(project){
         for (var i = 1; i <= project.count; i++){
-          stills.push("assets/work/" + project.id + "/" + String(i).padStart(2, "0") + project.ext);
+          stills.push("../assets/work/" + project.id + "/" + String(i).padStart(2, "0") + project.ext);
         }
       });
       shuffle(stills).forEach(function(src){
