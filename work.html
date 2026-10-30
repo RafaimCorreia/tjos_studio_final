@@ -341,7 +341,7 @@
     var frameCount = Math.min(project.count, 12);
     var frames = [];
     for (var i = 1; i <= frameCount; i++){
-      frames.push("assets/work/" + project.id + "/" + String(i).padStart(2, "0") + project.ext);
+      frames.push("assets/work-thumb/" + project.id + "/" + String(i).padStart(2, "0") + project.ext);
     }
 
     var restIndex = Math.floor(Math.random() * frames.length);

@@ -423,6 +423,7 @@
 
       function pad(n){ return String(n).padStart(2, "0"); }
       function srcFor(i){ return "assets/work/" + project.id + "/" + pad(i + 1) + project.ext; }
+      function thumbFor(i){ return "assets/work-thumb/" + project.id + "/" + pad(i + 1) + project.ext; }
 
       function preload(i){
         if (i < 0 || i >= total) return;
@@ -471,7 +472,7 @@
           thumb.className = "p-thumb";
           thumb.setAttribute("aria-label", "Go to still " + pad(i + 1));
           var thumbImg = document.createElement("img");
-          thumbImg.src = srcFor(i);
+          thumbImg.src = thumbFor(i);
           thumbImg.alt = "";
           thumbImg.loading = "lazy";
           thumb.appendChild(thumbImg);
