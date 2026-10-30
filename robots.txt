@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /rafaim-reel.html
+Disallow: /rafaim-stills-work/
+
+Sitemap: https://tjos.co/sitemap.xml

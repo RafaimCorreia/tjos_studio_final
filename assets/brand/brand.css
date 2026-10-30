@@ -1,0 +1,87 @@
+/* TJOS brand layer (manual v5, Oct 2026).
+   Loaded after each page's own styles. The house is neutral (ink, cream);
+   brand colour lives in the chip. */
+:root{
+  --ink:#111110;
+  --cream:#ECE6CE;
+  --signal:#F2342E;
+  --terracotta:#F2342E;
+  --cobalt:#111110;
+  --font-sans:"Outfit", "Helvetica Neue", Arial, sans-serif;
+  --font-serif:"PT Serif", Georgia, serif;
+  --font-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  --font-yuji:var(--font-sans);
+  --chip-r:7px;
+}
+
+body{ font-family:var(--font-sans); background:var(--ink); color:var(--cream); }
+a, button{ cursor:pointer; }
+
+/* frame lines: still, quiet */
+.frame-v, .frame-h{ background:rgba(236,230,206,.13); animation:none; }
+
+/* header */
+.site-header-left{ font-family:var(--font-sans); font-weight:500; letter-spacing:.16em; color:rgba(236,230,206,.7); }
+a.site-header-left:hover{ color:var(--cream); }
+.nav-logo{ height:44px; filter:none; }
+
+/* buttons take the chip shape: two square corners, two round */
+.nav-btn{
+  font-family:var(--font-sans);
+  font-weight:500;
+  font-size:12px;
+  letter-spacing:.14em;
+  border-radius:0 var(--chip-r) 0 var(--chip-r);
+  background:transparent;
+  color:var(--cream);
+  box-shadow:inset 0 0 0 1px rgba(236,230,206,.45);
+  transition:transform .3s var(--cubic), background-color .25s ease, color .25s ease, box-shadow .25s ease;
+}
+.nav-btn--black, .nav-btn--red, .nav-btn--blue{ background:transparent; color:var(--cream); }
+.nav-btn:hover, .nav-btn:focus-visible{ background:var(--cream); color:var(--ink); box-shadow:inset 0 0 0 1px var(--cream); }
+
+/* home */
+.home-logo-box{ background:transparent; padding:0; }
+.home-logo-box img{ height:clamp(110px, 15vw, 180px); filter:none; }
+.home-logo-box:hover, .home-logo-box:focus-visible{ box-shadow:none; }
+.home-caption{ font-family:var(--font-serif); font-style:italic; text-transform:none; letter-spacing:0; font-size:clamp(17px, 1.7vw, 21px); }
+.home-caption-text--hover{ font-family:var(--font-sans); font-style:normal; text-transform:uppercase; letter-spacing:.16em; font-size:.75em; color:var(--signal); }
+
+/* about */
+.about-copy{ font-family:var(--font-serif); max-width:760px; }
+.about-line{ padding:0; background:none !important; color:var(--cream) !important; }
+.about-line--red{ display:block; font-family:var(--font-sans); font-weight:500; font-size:clamp(22px, 2.6vw, 34px); line-height:1.3; letter-spacing:-.01em; }
+.about-line--blue{ font-style:italic; color:rgba(236,230,206,.78) !important; }
+.about-tag{ margin-top:2.2em; font-family:var(--font-sans); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:rgba(236,230,206,.6); }
+.about-tag::before, .contact-role::before{
+  content:""; display:inline-block; width:.8em; height:.72em; margin-right:.6em; vertical-align:baseline;
+  background:var(--signal); border-radius:0 .22em 0 .22em;
+}
+
+/* contact */
+.contact-role{ background:none; padding:0; color:rgba(236,230,206,.7); font-family:var(--font-sans); font-weight:500; font-size:12px; letter-spacing:.16em; }
+.contact-name{ font-family:var(--font-sans); font-size:15px; letter-spacing:0; color:var(--cream); margin-top:6px; }
+.contact-email{
+  background:none; padding:0; color:var(--cream);
+  font-family:var(--font-mono); font-size:clamp(18px, 2.2vw, 26px); letter-spacing:0;
+  border-bottom:1px solid rgba(236,230,206,.35);
+  transition:transform .3s var(--cubic), color .25s ease, border-color .25s ease;
+}
+.contact-email:hover, .contact-email:focus-visible{ color:var(--signal); border-color:var(--signal); }
+
+/* project */
+.p-credit{ font-family:var(--font-mono); letter-spacing:0; }
+@media (max-width:900px){
+  .p-credit{ font-size:9.5px; letter-spacing:.04em; padding:0 14px; line-height:1.6; }
+}
+
+/* project viewer: no grey box around the still */
+.p-stage, .p-stage-img{ background:transparent; }
+@media (max-width:900px){
+  .p-stage{ aspect-ratio:16/9; }
+  a.site-header-left{
+    display:block; position:absolute;
+    left:calc(var(--frame-side) + 4px); top:22px;
+    font-size:10px; letter-spacing:.12em;
+  }
+}
